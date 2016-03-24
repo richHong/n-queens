@@ -79,12 +79,27 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+       var counter = 0;
+      //iterate through row
+      //if more than '1' '1' in row, then return true else return false
+      _.each(this.attributes[rowIndex], function(val) {
+        if (val === 1) {
+          counter++
+        }
+      })
+      if (counter > 1) {
+        return true;
+      } else {
+        return false; // fixme
+      }
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var board = this;
+      return _.some(board.attributes, function(row,rowIndex) {
+        return board.hasRowConflictAt(rowIndex);
+      })
     },
 
 
@@ -94,12 +109,32 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var column = [];
+      _.each(this.attributes, function(row, rowIndex) {
+        column.push(row[colIndex]);
+      })
+
+      var counter = 0;
+
+      _.each(column, function(val) {
+        if (val === 1) {
+          counter++;
+        }
+      })
+
+      if (counter > 1) {
+        return true;
+      } else {
+        return false; // fixme
+      }
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+       var board = this;
+      return _.some(board.attributes, function(col,colIndex) {
+        return board.hasColConflictAt(colIndex);
+      })
     },
 
 
@@ -109,12 +144,61 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      
+      var mjDiagonal = [];
+      var start;
+      var mjCounter;
+     
+      if(majorDiagonalColumnIndexAtFirstRow > -1){
+        start = 0;
+        mjCounter = majorDiagonalColumnIndexAtFirstRow;
+        _.each(this.attributes, function(row, rowIndex) {
+          if (row[start + mjCounter] !== undefined){
+            mjDiagonal.push(row[start + mjCounter]);
+            mjCounter++;
+          }
+        })
+      } else {
+        start = -majorDiagonalColumnIndexAtFirstRow;
+        mjCounter = 0;
+        while (start < Object.keys(this.attributes).length - 1){
+          if (this.attributes[start][mjCounter] !== undefined){
+            mjDiagonal.push(this.attributes[start][mjCounter]);
+          }
+          start++;
+          mjCounter++;
+        }
+     };
+
+      var counter = 0;
+      _.each(mjDiagonal, function(val) {
+        if (val === 1) {
+          counter++;
+        }
+      })
+      if (counter > 1) {
+        return true;
+      } else {
+        return false; // fixme
+      }
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var x = Object.keys(this.attributes).length -1;
+      //create a counter as starting point
+      var counter = -(x-1);
+      //create variable to hold false 
+      var state = false;
+      //create condition to run function using a while loop
+      while (counter < x) {
+        //call in helper function on counter
+        if (this.hasMajorDiagonalConflictAt(counter)){
+          state = true;
+        }
+        counter++;
+      }
+      return state;
     },
 
 
@@ -124,12 +208,61 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var mnDiagonal = [];
+      //create a variable to reference the start, but doesn't change 
+      var startHolder;
+      //create variable to start
+      var start;
+      //create a variable get right index 
+      var mnCounter;
+      startHolder = Object.keys(this.attributes).length - 2;
+
+      //create conditions to set our start and mnCounter variables
+      if (minorDiagonalColumnIndexAtFirstRow < startHolder) {
+        start = 0;
+        mnCounter = minorDiagonalColumnIndexAtFirstRow;
+      } else {
+        mnCounter = startHolder;
+        start = minorDiagonalColumnIndexAtFirstRow - mnCounter;
+      };
+     
+      while (start < startHolder + 1) {
+        if (this.attributes[start][mnCounter] !== undefined) {
+          mnDiagonal.push(this.attributes[start][mnCounter]);
+        }
+          start++;
+          mnCounter--;
+      };
+
+      var counter = 0;
+      _.each(mnDiagonal, function(val) {
+        if (val === 1) {
+          counter++;
+        }
+      });
+      if (counter > 1) {
+        return true;
+      } else {
+        return false; // fixme
+      };
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var x = (Object.keys(this.attributes).length -2) * 2;
+      //create a counter as starting point
+      var counter = 0;
+      //create variable to hold false 
+      var state = false;
+      //create condition to run function using a while loop
+      while (counter < x) {
+        //call in helper function on counter
+        if (this.hasMinorDiagonalConflictAt(counter)){
+          state = true;
+        }
+        counter++;
+      };
+      return state;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
