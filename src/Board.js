@@ -111,7 +111,9 @@
     hasColConflictAt: function(colIndex) {
       var column = [];
       _.each(this.attributes, function(row, rowIndex) {
-        column.push(row[colIndex]);
+        if(row[colIndex] !== undefined){
+          column.push(row[colIndex]);
+        }
       })
 
       var counter = 0;
