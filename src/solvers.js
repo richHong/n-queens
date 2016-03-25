@@ -65,7 +65,7 @@ solutionMaker();
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
 
-  console.log('n:', n)
+  //console.log('n:', n)
 
   var expectedSolutions = [1,1,2]
 
@@ -75,9 +75,9 @@ window.countNRooksSolutions = function(n) {
     i++;
   }
 
-  console.log('expectedSolutions:', expectedSolutions);
+  //console.log('expectedSolutions:', expectedSolutions);
 
-  console.log('Number of solutions for ' + n + ' rooks:', expectedSolutions[n]);
+  //console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return expectedSolutions[n];
 };
 
@@ -85,10 +85,71 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
-  return solution;
+  console.log('n:',n)
+
+  if (n === 0){
+    return [];
+  } else if (n === 1){
+    return [[1]];
+  } 
+
+  var pieces = []
+
+  for (var i = 0; i < n; i++){
+    pieces.push(1);
+  }
+  for (var j =0; j < ((n*n)-n);j++){
+    pieces.push(0);
+  }
+
+
+  var combo = [];
+
+  var solution = [];
+
+  var result;
+
+var solutionMaker = function(){
+  pieces = _.shuffle(pieces);
+  console.log('pieces', pieces)
+  for (var i = 0; i < pieces.length;i++){
+    if (combo.length === n){
+      console.log('combo', combo)
+      solution.push(combo);
+      combo = [];
+    } 
+    //console.log('piece at '+pieces[i]+' index '+i)
+    combo.push(pieces[i]);
+  }
+  console.log('combo',combo)
+  solution.push(combo);
+  checkSolution();
+};
+ 
+var checkSolution = function(){
+    var solutionBoard = new Board(solution);
+    var check = solutionBoard.hasAnyColConflicts();
+    var check2 = solutionBoard.hasAnyRowConflicts();
+    var check3 = solutionBoard.hasAnyMajorDiagonalConflicts();
+    var check4 = solutionBoard.hasAnyMinorDiagonalConflicts();
+    //console.log('pieces check', pieces)
+    console.log('solution:', solution);
+    console.log('check:',check, check2, check3, check4);
+    if((check === false) && (check2 === false) && (check3 === false) && (check4 === false)){
+      result = solution;
+    } else {
+      combo = [];
+      solution = [];
+      solutionMaker();
+    }
+};
+
+solutionMaker();
+
+
+  console.log('Single solution for ' + n + ' queens:', JSON.stringify(result));
+  return result;
 };
 
 
