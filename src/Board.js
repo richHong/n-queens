@@ -84,9 +84,9 @@
       //if more than '1' '1' in row, then return true else return false
       _.each(this.attributes[rowIndex], function(val) {
         if (val === 1) {
-          counter++
+          counter++;
         }
-      })
+      });
       if (counter > 1) {
         return true;
       } else {
@@ -99,7 +99,7 @@
       var board = this;
       return _.some(board.attributes, function(row,rowIndex) {
         return board.hasRowConflictAt(rowIndex);
-      })
+      });
     },
 
 
@@ -114,7 +114,7 @@
         if(row[colIndex] !== undefined){
           column.push(row[colIndex]);
         }
-      })
+      });
 
       var counter = 0;
 
@@ -122,7 +122,7 @@
         if (val === 1) {
           counter++;
         }
-      })
+      });
 
       if (counter > 1) {
         return true;
@@ -136,7 +136,7 @@
        var board = this;
       return _.some(board.attributes, function(col,colIndex) {
         return board.hasColConflictAt(colIndex);
-      })
+      });
     },
 
 
@@ -159,7 +159,7 @@
             mjDiagonal.push(row[start + mjCounter]);
             mjCounter++;
           }
-        })
+        });
       } else {
         start = -majorDiagonalColumnIndexAtFirstRow;
         mjCounter = 0;
@@ -170,14 +170,14 @@
           start++;
           mjCounter++;
         }
-     };
+     }
 
       var counter = 0;
       _.each(mjDiagonal, function(val) {
         if (val === 1) {
           counter++;
         }
-      })
+      });
       if (counter > 1) {
         return true;
       } else {
@@ -226,7 +226,7 @@
       } else {
         mnCounter = startHolder;
         start = minorDiagonalColumnIndexAtFirstRow - mnCounter;
-      };
+      }
      
       while (start < startHolder + 1) {
         if (this.attributes[start][mnCounter] !== undefined) {
@@ -234,7 +234,7 @@
         }
           start++;
           mnCounter--;
-      };
+      }
 
       var counter = 0;
       _.each(mnDiagonal, function(val) {
@@ -246,7 +246,7 @@
         return true;
       } else {
         return false; // fixme
-      };
+      }
     },
 
     // test if any minor diagonals on this board contain conflicts
@@ -263,7 +263,7 @@
           state = true;
         }
         counter++;
-      };
+      }
       return state;
     }
 
